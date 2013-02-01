@@ -94,8 +94,8 @@
   \item{padj}{adjustment for each string perpendicular to
   the reading direction (see \code{\link{mtext}})}
 
-  \item{axes}{logical indicating whether to show axes (see
-  \code{\link{par}})}
+  \item{axes}{logical indicating whether to plot the axes
+  (default \code{FALSE})}
 
   \item{...}{further graphical parameters (see
   \code{\link{par}}), including \code{family}, \code{xpd},

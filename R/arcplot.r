@@ -43,9 +43,9 @@
 #'@param adj adjustment for each string in reading direction (see \code{\link{mtext}})
 #'@param padj adjustment for each string perpendicular to the reading direction
 #'(see \code{\link{mtext}})
-#'@param axes logical indicating whether to show axes (see \code{\link{par}})
+#'@param axes logical indicating whether to plot the axes (default \code{FALSE})
 #'@param ... further graphical parameters (see \code{\link{par}}), including
-#' \code{family}, \code{xpd}, \code{main}, \code{asp}, etc.
+#'\code{family}, \code{xpd}, \code{main}, \code{asp}, etc.
 #'@author Gaston Sanchez
 #'@seealso \code{\link{xynodes}}
 #'@export
@@ -85,8 +85,7 @@ arcplot <- function(
   col.nodes = "gray80", bg.nodes = "gray80", lwd.nodes = 1,
   show.labels = TRUE, labels = NULL, col.labels = "gray55",
   cex.labels = 0.9, las = 2, font = 1, line = 0, 
-  outer = FALSE, adj = NA, padj = NA,
-  axes = FALSE, ...)
+  outer = FALSE, adj = NA, padj = NA, axes=FALSE, ...)
 {
   # ======================================================
   # Checking arguments
@@ -189,7 +188,8 @@ arcplot <- function(
   # Coordinates of arcs (i.e. edges)
   # ======================================================
   # 'edgelist' in character format or numeric format?
-  if (mode(edgelist) == "numeric") tmp = nums else tmp = nodes
+#  if (mode(edgelist) == "numeric") tmp = nums else tmp = nodes
+  tmp = nodes
   # handy matrix with numeric indices '1:FROM' , '2:TO'
   e_num = matrix(0, nrow(edgelist), 2)
   for (i in 1:num_edges)

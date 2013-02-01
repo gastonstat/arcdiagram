@@ -1,0 +1,21 @@
+Version 0.1.4 (2013-02-01)
+------------------------------------------------------------
+
+* more elegant way to get coordinates of arcs
+
+Version 0.1.3 (2013-01-30)
+------------------------------------------------------------
+
+* allow vertical orientation of arc diagrams
+
+* rename function `xnodes` into `xynodes`
+
+Version 0.1.2 (2013-01-29)
+------------------------------------------------------------
+
+* change the way nodes are extracted in `arcplot`
+
+Version 0.1.1 (2013-01-28)
+------------------------------------------------------------
+
+* first stable version of arcdiagram
