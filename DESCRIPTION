@@ -1,8 +1,8 @@
 Package: arcdiagram
 Type: Package
 Title: Plot pretty arc diagrams
-Version: 0.1.4
-Date: 2013-02-01
+Version: 0.1.5
+Date: 2013-02-02
 Author: Gaston Sanchez
 Maintainer: Gaston Sanchez <gaston.stat@gmail.com>
 Description: Implementation of the function 'arcplot' for plotting pretty arc

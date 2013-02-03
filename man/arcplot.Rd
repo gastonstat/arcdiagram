@@ -43,7 +43,7 @@
   \item{ljoin}{the line join style for the arcs (see
   \code{\link{par}})}
 
-  \item{lmitre}{the line mitre limit fort the arcs (see
+  \item{lmitre}{the line mitre limit for the arcs (see
   \code{\link{par}})}
 
   \item{show.nodes}{logical indicating whether to show node
@@ -81,7 +81,7 @@
   \item{font}{font used for node labels (see
   \code{\link{par}})}
 
-  \item{line}{on which MARgin line the node labels are
+  \item{line}{on which margin line the node labels are
   displayed, starting at 0 counting outwards (see
   \code{\link{mtext}})}
 

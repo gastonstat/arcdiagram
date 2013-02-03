@@ -21,7 +21,7 @@
 #'@param lty line type for the arcs (see \code{\link{par}})
 #'@param lend the line end style for the arcs (see \code{\link{par}})
 #'@param ljoin the line join style for the arcs (see \code{\link{par}})
-#'@param lmitre the line mitre limit fort the arcs (see \code{\link{par}})
+#'@param lmitre the line mitre limit for the arcs (see \code{\link{par}})
 #'@param show.nodes logical indicating whether to show node symbols
 #'@param pch.nodes plotting 'character', i.e. symbol to use when
 #'plotting nodes (\code{pch.nodes=0:25})
@@ -36,7 +36,7 @@
 #'@param cex.labels expansion of node labels (default \code{"gray50"})
 #'@param las numeric in {0,1,2,3}; the style of axis labels (see \code{\link{par}})
 #'@param font font used for node labels (see \code{\link{par}})
-#'@param line on which MARgin line the node labels are displayed, 
+#'@param line on which margin line the node labels are displayed, 
 #'starting at 0 counting outwards (see \code{\link{mtext}})
 #'@param outer use outer margins, if available, to plot node labels
 #'(see \code{\link{mtext}})
@@ -226,12 +226,12 @@ arcplot <- function(
       lines(x, y, col=col.arcs[i], lwd=lwd.arcs[i], lty=lty,
             lend=lend, ljoin=ljoin, lmitre=lmitre)
     }
-    # add points
+    # add node symbols with points
     if (show.nodes) {
       points(x=centers, y=rep(0,num_nodes), pch=pch.nodes, 
              col=col.nodes, bg=bg.nodes, cex=cex.nodes, lwd=lwd.nodes)    
     }
-    # add node names
+    # add node names with mtext
     if (show.labels) {
       mtext(labels, side=1, line=line, at=centers, cex=cex.labels, outer=outer,
             col=col.labels, las=las, font=font, adj=adj, padj=padj, ...)    
