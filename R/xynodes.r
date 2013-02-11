@@ -52,7 +52,7 @@ xynodes <- function(
   # how many edges
   num_edges = nrow(edgelist)
   # get nodes
-  nodes = unique(as.vector(edgelist))
+  nodes = unique(as.vector(t(edgelist)))
   # how many nodes
   num_nodes = length(nodes)  
   # node numeric sequence
