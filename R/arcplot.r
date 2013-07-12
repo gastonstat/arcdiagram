@@ -1,55 +1,63 @@
-#'@title Arc Diagram Plot
-#'
-#'@description
-#'Give me an edgelist and I'll help you plot a pretty damn arc diagram
-#'
-#'@details
-#'The arcs are scaled such that they fit in a plot region with its
-#'x-axis ranging from zero to one. Node symbols and labels can be
-#'optionally displayed. Node symbols are displayed through
-#'the function \code{points}. In turn, node labels are displayed
-#'through the function \code{mtext}.
-#'
-#'@param edgelist basically a two-column matrix with edges (see \code{\link{graph}})
-#'@param sorted logical to indicate if nodes should be sorted (default \code{FALSE})
-#'@param decreasing logical to indicate type of sorting (used only when \code{sorted=TRUE})
-#'@param ordering optional numeric vector providing the ordering of nodes
-#'(when provided, this parameter overrides \code{sorted=TRUE})
-#'@param horizontal logical indicating whether to plot in horizontal orientation
-#'@param col.arcs color for the arcs (default \code{"gray50"})
-#'@param lwd.arcs line width for the arcs (default 1)
-#'@param lty line type for the arcs (see \code{\link{par}})
-#'@param lend the line end style for the arcs (see \code{\link{par}})
-#'@param ljoin the line join style for the arcs (see \code{\link{par}})
-#'@param lmitre the line mitre limit for the arcs (see \code{\link{par}})
-#'@param show.nodes logical indicating whether to show node symbols
-#'@param pch.nodes plotting 'character', i.e. symbol to use when
-#'plotting nodes (\code{pch.nodes=0:25})
-#'@param cex.nodes expansion of the node symbols (default 1)
-#'@param col.nodes color of the node symbols (default \code{"gray50"})
-#'@param bg.nodes background (fill) color for the node symbols 
-#'given by \code{pch.nodes=21:25}
-#'@param lwd.nodes line width for drawing node symbols (see \code{\link{points}})
-#'@param show.labels logical indicating whether to show node labels
-#'@param labels character vector with labels for the nodes
-#'@param col.labels color of the node labels (default \code{"gray50"})
-#'@param cex.labels expansion of node labels (default \code{"gray50"})
-#'@param las numeric in {0,1,2,3}; the style of axis labels (see \code{\link{par}})
-#'@param font font used for node labels (see \code{\link{par}})
-#'@param line on which margin line the node labels are displayed, 
-#'starting at 0 counting outwards (see \code{\link{mtext}})
-#'@param outer use outer margins, if available, to plot node labels
-#'(see \code{\link{mtext}})
-#'@param adj adjustment for each string in reading direction (see \code{\link{mtext}})
-#'@param padj adjustment for each string perpendicular to the reading direction
-#'(see \code{\link{mtext}})
-#'@param axes logical indicating whether to plot the axes (default \code{FALSE})
-#'@param ... further graphical parameters (see \code{\link{par}}), including
-#'\code{family}, \code{xpd}, \code{main}, \code{asp}, etc.
-#'@author Gaston Sanchez
-#'@seealso \code{\link{xynodes}}
-#'@export
-#'@examples
+#' @title Arc Diagram Plot
+#' 
+#' @description
+#' Give me an edgelist and I'll help you plot a pretty damn arc diagram
+#' 
+#' @details
+#' The arcs are scaled such that they fit in a plot region with its
+#' x-axis ranging from zero to one. Node symbols and labels can be
+#' optionally displayed. Node symbols are displayed through
+#' the function \code{points}. In turn, node labels are displayed
+#' through the function \code{mtext}.
+#' 
+#' @param edgelist basically a two-column matrix with edges 
+#' (see \code{\link{graph}})
+#' @param sorted logical to indicate if nodes should be sorted 
+#' (default \code{FALSE})
+#' @param decreasing logical to indicate type of sorting 
+#' (used only when \code{sorted=TRUE})
+#' @param ordering optional numeric vector providing the ordering of nodes
+#' (when provided, this parameter overrides \code{sorted=TRUE})
+#' @param horizontal logical indicating whether to plot 
+#' in horizontal orientation
+#' @param col.arcs color for the arcs (default \code{"gray50"})
+#' @param lwd.arcs line width for the arcs (default 1)
+#' @param lty line type for the arcs (see \code{\link{par}})
+#' @param lend the line end style for the arcs (see \code{\link{par}})
+#' @param ljoin the line join style for the arcs (see \code{\link{par}})
+#' @param lmitre the line mitre limit for the arcs (see \code{\link{par}})
+#' @param show.nodes logical indicating whether to show node symbols
+#' @param pch.nodes plotting 'character', i.e. symbol to use when
+#' plotting nodes (\code{pch.nodes=0:25})
+#' @param cex.nodes expansion of the node symbols (default 1)
+#' @param col.nodes color of the node symbols (default \code{"gray50"})
+#' @param bg.nodes background (fill) color for the node symbols 
+#' given by \code{pch.nodes=21:25}
+#' @param lwd.nodes line width for drawing node symbols 
+#' (see \code{\link{points}})
+#' @param show.labels logical indicating whether to show node labels
+#' @param labels character vector with labels for the nodes
+#' @param col.labels color of the node labels (default \code{"gray50"})
+#' @param cex.labels expansion of node labels (default \code{"gray50"})
+#' @param las numeric in {0,1,2,3}; the style of axis labels 
+#' (see \code{\link{par}})
+#' @param font font used for node labels (see \code{\link{par}})
+#' @param line on which margin line the node labels are displayed, 
+#' starting at 0 counting outwards (see \code{\link{mtext}})
+#' @param outer use outer margins, if available, to plot node labels
+#' (see \code{\link{mtext}})
+#' @param adj adjustment for each string in reading direction 
+#' (see \code{\link{mtext}})
+#' @param padj adjustment for each string perpendicular to 
+#' the reading direction (see \code{\link{mtext}})
+#' @param axes logical indicating whether to plot the axes 
+#' (default \code{FALSE})
+#' @param ... further graphical parameters (see \code{\link{par}}), including
+#' \code{family}, \code{xpd}, \code{main}, \code{asp}, etc.
+#' @author Gaston Sanchez
+#' @seealso \code{\link{xynodes}}
+#' @export
+#' @examples
 #'
 #'  \dontrun{
 #'  # generate graphs
@@ -79,13 +87,13 @@
 #'  }
 #'
 arcplot <- function(
-  edgelist, sorted = FALSE, decreasing = FALSE, ordering = NULL, horizontal = TRUE,
-  col.arcs = "#5998ff77", lwd.arcs = 1.8, lty = 1, lend = 1, ljoin = 2, lmitre = 1,
-  show.nodes = FALSE, pch.nodes = 19, cex.nodes = 1, 
-  col.nodes = "gray80", bg.nodes = "gray80", lwd.nodes = 1,
+  edgelist, sorted = FALSE, decreasing = FALSE, ordering = NULL, 
+  horizontal = TRUE, col.arcs = "#5998ff77", lwd.arcs = 1.8, lty = 1, 
+  lend = 1, ljoin = 2, lmitre = 1, show.nodes = FALSE, pch.nodes = 19, 
+  cex.nodes = 1, col.nodes = "gray80", bg.nodes = "gray80", lwd.nodes = 1,
   show.labels = TRUE, labels = NULL, col.labels = "gray55",
   cex.labels = 0.9, las = 2, font = 1, line = 0, 
-  outer = FALSE, adj = NA, padj = NA, axes=FALSE, ...)
+  outer = FALSE, adj = NA, padj = NA, axes = FALSE, ...)
 {
   # ======================================================
   # Checking arguments
