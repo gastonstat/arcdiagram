@@ -22,9 +22,10 @@
   \item{decreasing}{logical to indicate type of sorting
   (used only when \code{sorted=TRUE})}
 
-  \item{ordering}{optional numeric vector providing the
-  ordering of nodes (when provided, this parameter
-  overrides \code{sorted=TRUE})}
+  \item{ordering}{optional numeric or string vector
+  providing the ordering of nodes. When provided, this
+  parameter overrides \code{sorted=TRUE}). See the details
+  section for more information.}
 
   \item{horizontal}{logical indicating whether to plot in
   horizontal orientation}
@@ -112,9 +113,40 @@
   displayed through the function \code{points}. In turn,
   node labels are displayed through the function
   \code{mtext}.
+
+  When \code{ordering} is provided in numeric format and
+  node labels are strings, the labels are alphabetically
+  ordered first, and then nodes are sorted according to the
+  provided \code{ordering}.
+
+  If \code{ordering} is provided in string format, the node
+  labels must be strings as well. The nodes will be sorted
+  according to \code{ordering}.
 }
 \examples{
 \dontrun{
+ # create an edgelist
+ un_graphe <- rbind(
+ c("fromage", "pain"),
+ c("pain", "vin"),
+ c("vin", "biere"),
+ c("cidre", "biere"),
+ c("foie", "fromage"),
+ c("pain", "foie"))
+
+ # deafult arcplot
+ arcplot(un_graphe)
+ # vertical display
+ arcplot(un_graphe, horizontal=FALSE)
+ # nodes sorted alphabetically (increasing)
+ arcplot(un_graphe, sorted=TRUE)
+ # nodes sorted alphabetically (decreasing)
+ arcplot(un_graphe, sorted=TRUE, decreasing = TRUE)
+ # provided order for nodes
+ new_order = c("vin", "biere", "cidre", "fromage", "foie", "pain")
+ arcplot(un_graphe, ordering = new_order)
+
+
  # generate graphs
  ring_graph = graph.ring(10)
  star_graph = graph.star(10, mode="out")

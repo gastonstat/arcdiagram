@@ -1,13 +1,13 @@
 Package: arcdiagram
 Type: Package
 Title: Plot pretty arc diagrams
-Version: 0.1.7
-Date: 2013-07-12
+Version: 0.1.8
+Date: 2014-03-23
 Author: Gaston Sanchez
 Maintainer: Gaston Sanchez <gaston.stat@gmail.com>
 Description: Implementation of the function 'arcplot' for plotting pretty arc
     diagrams ('arcdiagram' can be seen as a plugin for the 'igraph' package)
-URL: http://www.gastonsanchez.com/arcdiagram
+URL: http://www.gastonsanchez.com
 Depends:
     igraph,
     R (>= 2.15.1)
