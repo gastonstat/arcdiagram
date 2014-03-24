@@ -1,0 +1,355 @@
+\documentclass[12pt]{article}
+\usepackage{upquote}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setlength{\parindent}{0in}
+\usepackage{graphicx, verbatim}
+\usepackage{alltt}
+\usepackage{enumitem}
+\usepackage{color}
+\definecolor{darkgray}{rgb}{0.3,0.3,0.3}
+\definecolor{lightgray}{rgb}{0.5,0.5,0.5}
+\definecolor{tomato}{rgb}{0.87,0.32,0.24}
+\definecolor{myblue}{rgb}{0.066,0.545,0.890}
+\definecolor{linkcolor}{rgb}{0.87,0.32,0.24}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  urlcolor=linkcolor,
+  linkcolor=linkcolor
+}
+\newcommand{\arcdi}{\texttt{arcdiagram}}
+\newcommand{\code}[1]{\texttt{#1}}
+
+% \VignetteIndexEntry{Introduction to arcdiagram}
+% \VignetteEngine{knitr}
+
+
+
+\begin{document}
+\title{Introduction to the R package \arcdi{}}
+\author{
+ \textbf{\textcolor{darkgray}{G}}\textcolor{lightgray}{aston} 
+ \textbf{\textcolor{darkgray}{S}}\textcolor{lightgray}{anchez} \\
+  \small \texttt{\href{http://www.gastonsanchez.com}
+{www.gastonsanchez.com}}
+}
+\date{}
+\maketitle
+
+<<echo=FALSE, message=FALSE>>=
+library(arcdiagram)
+@
+
+
+%--------------------------------------------
+\section{Introduction}
+\arcdi{} is a minimalist R package designed for the solely purpose of helping you plot pretty arc diagrams like the one below:
+<<arcdiag_cover, echo=FALSE, message=FALSE, fig.width=5, fig.height=4, out.width='.9\\linewidth', out.height='.6\\linewidth', fig.align='center'>>=
+library(arcdiagram)
+
+# ggplot colors
+ggcols <- function(n, alfa) {
+  hues = seq(15,375,length=n+1)
+  hcl(h=hues, l=65, c=100, alpha=alfa)[1:n]
+}
+
+# tree graph example
+covergraph = graph.full(n=8)
+V(covergraph)$name = toupper(letters[1:vcount(covergraph)])
+cover_edges = get.edgelist(covergraph)
+
+# plot
+op = par(mar = c(1,1,1,1))
+set.seed(325)
+arcplot(cover_edges, lwd.arcs=runif(28,1,8), col.arcs=ggcols(10, 0.5)[7:10], 
+show.nodes=TRUE, cex.nodes=1.5, col.nodes="gray90", las=1, line=-0.5)
+par(op)
+@
+
+
+\vspace{5 mm}
+\subsection{Arc Diagrams}
+So, what is an arc diagram? Briefly, an \textbf{arc diagram} is a graphical display to visualize graphs or networks in a \textit{one-dimensional layout}. The main idea is to display nodes along a single axis, while representing the edges or connections between nodes with arcs. 
+
+The reason why an arc diagram is said to be a one-dimensional layout is because all the nodes lay on one axis, as opposed to other more common visualizations of graphs where nodes are spreaded in a two-dimensional space (see the following figure):
+<<arc_diag_example, echo=FALSE, fig.width=7, fig.height=3.5, out.width='.9\\linewidth', out.height='.4\\linewidth', fig.align='center'>>=
+# graph
+tree_graph = graph.tree(5, 2)
+V(tree_graph)$name = paste("Node", 1:vcount(tree_graph), sep='')
+tree_edges = get.edgelist(tree_graph)
+# plot
+op = par(mfrow = c(1,2), mar = c(2,1,3,1))
+plot(tree_graph)
+title("Typical Graph\n(two-dimensional)", col.main="gray50", cex.main=0.9)
+arcplot(tree_edges, labels=V(tree_graph)$name, las=1)
+title("Arc Diagram\n(one-dimensional)", col.main="gray50", cex.main=0.9)
+par(op)
+@
+
+One of the disadvantages of arc diagrams is that they are sensitive to node ordering; ideally, better visualizations are achieved when related nodes are close to each other, which helps us detect clusters or groups of nodes. 
+
+Often, a random node ordering produces poor diagrams in which large arcs have crossovers that difficult visual processing. From the practical point of view, the ordering issue will force you to play with different settings until you find one that allows you to get good results.
+
+Some network specialists acknowledge that arc diagrams might be appropriate for undirected graphs, making them useful for annotations as compared to other two-dimensional network layouts, such as rollup, matrix or table layouts.
+
+
+
+%--------------------------------------------
+\vspace{5 mm}
+\section{The R package \texttt{arcdiagram}}
+\texttt{arcdiagram} is a minimal package for plotting basic arc diagrams in R. My main motivation for creating \texttt{arcdiagram} was because of \textbf{Similar Diversity}, a really nice graphic design project by Philipp Steinweber and Andreas Koller (\href{http://similardiversity.net/}{http://similardiversity.net/}). Being deeply captivated with such an amazing visualization I decided to do a more modest attempt in R which indirectly took me to the development of \texttt{arcdiagram}.
+
+
+%--------------------------------------------
+\vspace{5 mm}
+\subsection{Installation}
+\arcdi{} is not available on CRAN; instead it lives in one of my github repositories: \\ 
+\href{https://github.com/gastonstat/arcdiagram}{https://github.com/gastonstat/arcdiagram} \\ 
+This means that you have to use the package \texttt{devtools} (by Hadley Wickham) in order to install \arcdi{} in R:
+<<github, message=FALSE, eval=FALSE>>=
+# install 'devtools' if you haven't
+install.packages("devtools")
+
+# load devtools
+library(devtools)
+
+# then download 'arcdiagram' using 'install_github'
+install_github('arcdiagram',  username='gastonstat')
+
+# load arcdiagram
+library(arcdiagram)
+@
+
+
+\subsection{Basic Usage}
+Because the only purpose behind \texttt{arcdiagram} is to visualize graphs (i.e. networks), I designed it having in mind the package \texttt{igraph} (by Gabor Csardi and Tamas Nepusz). In other words, I developed \texttt{arcdiagram} as a \textit{plugin} of \texttt{igraph}. The structure of the package is very simple and it consists of one main function: \texttt{arcplot()}; and one accesory function: \texttt{xynodes()}. The way \texttt{arcplot()} works is very simple: it takes an \texttt{"edgelist"} object and it plots the edges as arcs. If you are not familiar with the term, an \textbf{edge list} is just a two column matrix that gives the list of edges for a graph. Let's see an example:
+<<dummy_graph, eval=FALSE>>=
+# create a graph with 8 nodes
+star_graph = graph.star(8, mode="out")
+
+# add names to nodes
+V(star_graph)$name = paste("node", 1:vcount(star_graph), sep="-")
+
+# extract edgelist
+star_edges = get.edgelist(star_graph)
+
+# plot arc diagram
+arcplot(star_edges, las=1)
+@
+
+<<arcplot_dummy_graph, fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=FALSE>>=
+# create a graph with 10 nodes
+star_graph = graph.star(8, mode="out")
+
+# add names to nodes
+V(star_graph)$name = paste("node", 1:vcount(star_graph), sep="-")
+
+# extract edgelist
+star_edges = get.edgelist(star_graph)
+
+#plot
+op = par(mar = c(4, 0.5, 0.5, 0.5))
+arcplot(star_edges, las=1, lwd.arcs=2)
+par(op)
+@
+
+
+\subsubsection{\texttt{arcplot()} function}
+If you check the documentation of the function \texttt{arcplot()} you'll see that there's a bunch of parameters to play with. The main parameter is the \texttt{edgelist} which is a two-column matrix with the edges of the graph. This is the mandatory ingredient that you have to provide. The rest of parameters are either optional or have default values. However, if you want to spark your creativity with \texttt{arcplot()} we need to talk about the elements present in an arc diagram.
+
+Basically we have three elements: 1) the nodes (or vertices), 2) the arcs (or edges), and 3) the node labels. The nodes and the labels are optional (you can choose whether to show them). 
+
+\paragraph{Arcs arguments}
+The arcs are plotted by \texttt{arcplot()} using the \texttt{lines()} function internally. This means that the arc-related arguments are basically the arguments behind \texttt{lines()}: \\
+\begin{center}
+ \begin{tabular}{l l}
+  \texttt{col.arcs} & color for the arcs \\
+  \texttt{lwd.arcs} & line width for the arcs (default 1) \\
+  \texttt{lty.arcs} & line type for the arcs \\
+  \texttt{lend} & the line end style for the arcs \\
+  \texttt{ljoin} & the line join style for the arcs \\
+  \texttt{lmitre} & the line mitre limit for the arcs \\
+ \end{tabular}
+\end{center}
+
+\paragraph{Node symbols' arguments}
+Node symbols are plotted by \texttt{arcplot()} using the \texttt{points()} function internally. What this means is that the node symbols arguments are basically the arguments that \texttt{points()} uses: \\
+\begin{center}
+ \begin{tabular}{l l}
+  \texttt{show.nodes} & logical indicating whether to show node symbols \\
+  \texttt{pch.nodes} & symbol to use when plotting nodes \\
+  \texttt{cex.nodes} & expansion of the node symbols \\
+  \texttt{col.nodes} & color of the node symbols \\
+  \texttt{bg.nodes} & background (fill) color for the node symbols given by \code{pch.nodes=21:25} \\
+  \texttt{lwd.nodes} & line width for drawing node symbols \\
+ \end{tabular}
+\end{center}
+
+\paragraph{Node labels' arguments}
+In turn, node labels are plotted by \texttt{arcplot()} using the \texttt{mtext()} function internally. Node labels' arguments are related to the arguments behind \texttt{mtext()}: \\
+\begin{center}
+ \begin{tabular}{l l}
+  \texttt{show.labels} & logical indicating whether to show node labels \\
+  \texttt{labels} & character vector with labels for the nodes \\
+  \texttt{col.labels} & color of the node labels \\
+  \texttt{cex.labels} & expansion of node labels \\
+  \texttt{las} & numeric in {0,1,2,3}; the style of axis labels \\
+  \texttt{font} & font used for node labels \\
+  \texttt{line} & on which margin line the node labels are displayed \\
+  \texttt{outer} & use outer margins, if available, to plot node labels \\
+  \texttt{adj} & adjustment for each string in reading direction \\
+  \texttt{padj} & adjustment for each string perpendicular to the reading direction \\
+ \end{tabular}
+\end{center}
+
+\paragraph{Additional arguments}
+In addition to the previous arguments, there's a handful of additional parameters in \texttt{arcplot()} that control the ordering of the nodes and the layout orientation: \\
+\begin{center}
+ \begin{tabular}{l l}
+  \texttt{sorted} & logical to indicate if nodes should be sorted \\
+  \texttt{decreasing} & logical to indicate type of sorting \\
+  \texttt{ordering} & optional numeric vector providing the ordering of nodes \\
+  \texttt{horizontal} & logical indicating whether to plot in horizontal orientation \\
+ \end{tabular}
+\end{center}
+
+
+\subsection{Examples}
+Let's see a basic example. We will manually create an \texttt{edgelist} representing a graph of projects between coworkers in a scientific laboratory:
+<<lab_edgelist, tidy=FALSE>>=
+# create an edgelist
+lab = rbind(
+ c("Emilia", "Kirk"),
+ c("Emilia", "Yong"),
+ c("Filipe", "Matteo"),
+ c("Filipe", "Tyler"),
+ c("Matteo", "Filipe"),
+ c("Matteo", "Tyler"),
+ c("Mehmet", "Rori"),
+ c("Rori", "Kirk"),
+ c("Rori", "Vitor"),
+ c("Anna", "Mehmet"),
+ c("Anna", "Yong")
+)
+@
+
+Once we created our \texttt{edgelist}, we can create an arc diagram with \texttt{arcplot()}:
+<<lab_arcplot_ex1, fig.width=7, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=c(1,3)>>=
+# arc diagram
+op = par(mar = c(3,0.5,0.5,0.5))
+arcplot(lab)
+par(op)
+@
+
+If you want to inspect how the \texttt{edgelist} looks like, simply type:
+<<inspect_lab>>=
+# how does it look like
+lab
+@
+
+\subsubsection*{Creating a graph}
+If we want to plot our graph using the package \texttt{igraph()}, first we need to create a \texttt{"graph"} object with the function \code{graph.edgelist()}, and then we can use the default \texttt{plot()} method: 
+<<lab_graph, fig.width=6, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=c(1,2,4,6)>>=
+# make graph from edgelist
+glab = graph.edgelist(lab, directed=TRUE)
+
+# plot graph
+op = par(mar = c(0.5, 0.5, 0.5, 0.5))
+plot(glab)
+par(op)
+@
+
+
+\subsubsection*{Playing with arc diagrams}
+The first arc diagram that we produced is not bad but we can definitely improve it. For instance, we can take into account nodes' degree ---the \textbf{degree} of a node is the number of edges connected to it--- using the function \code{degree()}:
+<<lab_degree>>=
+# degrees
+lab_degree = degree(glab)
+@
+
+Let's say that we want to put weights on the edges so they reflect some sort of value. We can do this by assigning some random numbers: 
+<<lab_weights>>=
+# assign random weights to edges
+set.seed(123)
+E(glab)$weight = round(runif(nrow(lab), .5, 4))
+@
+
+We can also get clusters of the nodes using the function \texttt{clusters()}:
+<<lab_clusters>>=
+# get clusters
+gclus = clusters(glab)
+@
+
+To make our arc diagram more appealing, we need some colors reflecting the cluster memberships:
+<<lab_cluster_colors>>=
+# define two hues of blue
+blues = c("#adccff","#4272bf")
+
+# vector of colors based on cluster membership
+cols = blues[gclus$membership]
+@
+
+<<echo=FALSE>>=
+options(width = 60)
+@
+
+Now that we have all the necessary ingredients, we apply \texttt{arcplot()}:
+<<lab_arcdiagram_ex2, fig.width=6, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=c(1,3)>>=
+# another arc diagram
+op = par(mar = c(4, 0.5, 1, 0.5))
+arcplot(lab, lwd.arcs = 2*E(glab)$weight,    
+        cex.nodes=lab_degree, col.nodes=cols, bg.nodes=cols, 
+        show.nodes=TRUE)
+par(op)
+@
+
+Let's change the colors of the arcs:
+<<lab_arcdiagram_ex3, fig.width=6, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=c(1,3)>>=
+# another arc diagram
+op = par(mar = c(4, 0.5, 1, 0.5))
+arcplot(lab, lwd.arcs = 2*E(glab)$weight, col.arcs = "#77777765",
+        cex.nodes=lab_degree, col.nodes=cols, bg.nodes=cols, 
+        show.nodes=TRUE)
+par(op)
+@
+
+Let's order the nodes according to the clusters:
+<<lab_arcdiagram_ex4, fig.width=6, fig.height=4, out.width='.9\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=c(1,3)>>=
+# another arc diagram
+op = par(mar = c(4, 0.5, 1, 0.5))
+arcplot(lab, lwd.arcs = 2*E(glab)$weight, col.arcs = "#77777765",
+        cex.nodes=lab_degree, col.nodes=cols, bg.nodes=cols, 
+        show.nodes=TRUE, ordering=order(gclus$membership))
+par(op)
+@
+
+Let's change the diagram to a vertical orientation
+<<lab_arcdiagram_ex5, fig.width=4, fig.height=6, out.width='.65\\linewidth', out.height='.65\\linewidth', fig.align='center', echo=c(1,3), tidy=FALSE>>=
+# arc diagram in vertical orientation
+op = par(mar = c(0.5, 7, 0.5, 3))
+arcplot(lab, lwd.arcs = 2*E(glab)$weight, col.arcs = "#77777765",
+        cex.nodes=lab_degree, col.nodes=cols, bg.nodes=cols,
+        show.nodes=TRUE, ordering=order(gclus$membership), 
+        horizontal=FALSE)
+par(op)
+@
+
+
+
+%--------------------------------------------
+\vspace{5 mm}
+\section*{Some References}
+\begin{itemize}
+ \item Arc Diagrams in 'Visual Complexity' (by Manuel Lima) \\
+  \href{http://www.visualcomplexity.com/vc/index.cfm?method=Arc\%20Diagrams}{http://www.visualcomplexity.com/vc/index.cfm?method=Arc\%20Diagrams}
+ \item Protovis by Mike Bostock \\
+  \href{http://mbostock.github.com/protovis/ex/arc.html}{http://mbostock.github.com/protovis/ex/arc.html}
+ \item Arc Diagrams: Visualizing Structure in Strings by Martin Wattenberg \\
+  \href{http://hint.fm/papers/arc-diagrams.pdf}{http://hint.fm/papers/arc-diagrams.pdf}
+ \item R-chie: A web server and R package for plotting arc diagrams of RNA secondary structures (by Daniel Lai, Jeff R. Proctor, Jing Yun A. Zhu, and Irmtraud M. Meyer) \\
+  \href{http://www.e-rna.org/r-chie/index.cgi}{http://www.e-rna.org/r-chie/index.cgi}
+\end{itemize}
+
+
+\end{document}

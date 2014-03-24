@@ -1,2 +1,7 @@
+export(above_below)
+export(arc_radius_locs)
 export(arcplot)
+export(graph_info)
+export(min_max_margin)
+export(node_coords)
 export(xynodes)

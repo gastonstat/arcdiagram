@@ -1,7 +1,16 @@
+Version 0.1.9 (2014-03-24)
+------------------------------------------------------------
+
+* new parameter `above` to specify display of arcs
+
+* change function `node_coords` to replace old `xynodes`
+
+
 Version 0.1.8 (2014-03-23)
 ------------------------------------------------------------
 
-* parameter ordering accepts strings
+* parameter `ordering` now accepts strings
+
 
 Version 0.1.6 (2013-02-11)
 ------------------------------------------------------------

@@ -1,8 +1,8 @@
 Package: arcdiagram
 Type: Package
 Title: Plot pretty arc diagrams
-Version: 0.1.8
-Date: 2014-03-23
+Version: 0.1.9
+Date: 2014-03-24
 Author: Gaston Sanchez
 Maintainer: Gaston Sanchez <gaston.stat@gmail.com>
 Description: Implementation of the function 'arcplot' for plotting pretty arc
@@ -11,9 +11,11 @@ URL: http://www.gastonsanchez.com
 Depends:
     igraph,
     R (>= 2.15.1)
-Suggest: diagram
+Suggests:
+    diagram,
+    knitr
+VignetteBuilder: knitr
 License: GPL-3
 LazyLoad: yes
 Collate:
     'arcplot.r'
-    'xynodes.r'

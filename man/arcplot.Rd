@@ -3,14 +3,15 @@
 \title{Arc Diagram Plot}
 \usage{
   arcplot(edgelist, sorted = FALSE, decreasing = FALSE,
-    ordering = NULL, horizontal = TRUE,
-    col.arcs = "#5998ff77", lwd.arcs = 1.8, lty = 1,
-    lend = 1, ljoin = 2, lmitre = 1, show.nodes = FALSE,
-    pch.nodes = 19, cex.nodes = 1, col.nodes = "gray80",
-    bg.nodes = "gray80", lwd.nodes = 1, show.labels = TRUE,
-    labels = NULL, col.labels = "gray55", cex.labels = 0.9,
-    las = 2, font = 1, line = 0, outer = FALSE, adj = NA,
-    padj = NA, axes = FALSE, ...)
+    ordering = NULL, labels = NULL, horizontal = TRUE,
+    above = NULL, col.arcs = "#5998ff77", lwd.arcs = 1.8,
+    lty.arcs = 1, lend = 1, ljoin = 2, lmitre = 1,
+    show.nodes = TRUE, pch.nodes = 19, cex.nodes = 1,
+    col.nodes = "gray80", bg.nodes = "gray80",
+    lwd.nodes = 1, show.labels = TRUE,
+    col.labels = "gray55", cex.labels = 0.9, las = 2,
+    font = 1, line = 0, outer = FALSE, adj = NA, padj = NA,
+    axes = FALSE, ...)
 }
 \arguments{
   \item{edgelist}{basically a two-column matrix with edges
@@ -27,15 +28,22 @@
   parameter overrides \code{sorted=TRUE}). See the details
   section for more information.}
 
+  \item{labels}{optional string vector with labels for the
+  nodes}
+
   \item{horizontal}{logical indicating whether to plot in
   horizontal orientation}
+
+  \item{above}{optional vector indicating which arcs should
+  be displayed above (or to the right) and below (or to the
+  left) of the axis}
 
   \item{col.arcs}{color for the arcs (default
   \code{"gray50"})}
 
   \item{lwd.arcs}{line width for the arcs (default 1)}
 
-  \item{lty}{line type for the arcs (see
+  \item{lty.arcs}{line type for the arcs (see
   \code{\link{par}})}
 
   \item{lend}{the line end style for the arcs (see
@@ -67,8 +75,6 @@
 
   \item{show.labels}{logical indicating whether to show
   node labels}
-
-  \item{labels}{character vector with labels for the nodes}
 
   \item{col.labels}{color of the node labels (default
   \code{"gray50"})}
@@ -138,6 +144,8 @@
  arcplot(un_graphe)
  # vertical display
  arcplot(un_graphe, horizontal=FALSE)
+ # arcplot with arcs above and below axis
+ arcplot(un_graphe, above = c(1, 3, 5))
  # nodes sorted alphabetically (increasing)
  arcplot(un_graphe, sorted=TRUE)
  # nodes sorted alphabetically (decreasing)
