@@ -27,7 +27,7 @@ graph_info <-
     
     num_edges = nrow(edgelist)
     # get nodes (this could be numeric or character)
-    if(hasArgs(vertices)){
+    if(hasArg(vertices)){
     #to deal with singleton nodes
     nodes = vertices 
     }else{
