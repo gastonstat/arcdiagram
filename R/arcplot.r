@@ -15,7 +15,7 @@
 #' @export
 #' @keywords internal
 graph_info <- 
-  function(edgelist, vertices, sorted = FALSE, decreasing = FALSE, 
+  function(edgelist, sorted = FALSE, decreasing = FALSE, 
            ordering = NULL, labels = NULL)
   {
     # ======================================================
@@ -27,17 +27,20 @@ graph_info <-
     
     num_edges = nrow(edgelist)
     # get nodes (this could be numeric or character)
-#    nodes = unique(as.vector(t(edgelist)))	
+    if(hasArgs(vertices)){
     #to deal with singleton nodes
-    node = vertices 
-    num_nodes = length(node)
+    nodes = vertices 
+    }else{
+    nodes = unique(as.vector(t(edgelist)))	
+    }
+    num_nodes = length(nodes)
     # check labels (i.e. node names)
     if (!is.null(labels))
     {
       if (length(labels) != num_nodes)
         stop("\nLength of 'labels' differs from number of nodes")
     } else {
-      labels = node
+      labels = nodes
     }
     
     # auxiliar order (this may change if sorted or ordering required)
@@ -77,7 +80,7 @@ graph_info <-
     
     ## output
     list(
-      nodes = node,
+      nodes = nodes,
       labels = labels,
       num_nodes = num_nodes,
       num_edges = num_edges,
@@ -369,7 +372,7 @@ min_max_margin <- function(radios, above)
 #'  }
 #'
 arcplot <- function(
-  edgelist, vertices, sorted = FALSE, decreasing = FALSE, ordering = NULL, 
+  edgelist, sorted = FALSE, decreasing = FALSE, ordering = NULL, 
   labels = NULL, horizontal = TRUE, above = NULL, 
   col.arcs = "#5998ff77", lwd.arcs = 1.8, lty.arcs = 1, 
   lend = 1, ljoin = 2, lmitre = 1, show.nodes = TRUE, pch.nodes = 19, 
@@ -379,8 +382,13 @@ arcplot <- function(
   outer = FALSE, adj = NA, padj = NA, axes = FALSE, ...)
 {
   # Get graph information
+  if(hasArg(vertices) { 
   nodes_edges = graph_info(edgelist, vertices = vertices, sorted = sorted, decreasing = decreasing, 
                            ordering = ordering, labels = labels)
+  }else{
+  nodes_edges = graph_info(edgelist, sorted = sorted, decreasing = decreasing, 
+                           ordering = ordering, labels = labels)
+  }
   
   nodes = nodes_edges$nodes
   num_nodes = nodes_edges$num_nodes
@@ -564,7 +572,7 @@ arcplot <- function(
 #'  }
 #'
 node_coords <- function(
-  edgelist, vertices, sorted = FALSE, decreasing = FALSE, ordering = NULL, 
+  edgelist, sorted = FALSE, decreasing = FALSE, ordering = NULL, 
   labels = NULL)
 {
   # Get graph information
