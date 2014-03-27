@@ -553,7 +553,7 @@ arcplot <- function(
 #'  arcplot(edgelist, labels=V(some_graph)$name, las=1)
 #'  
 #'  # get x-axis coordinates of nodes
-#'  xcoords = xynodes(edgelist, labels=V(some_graph)$name)
+#'  xcoords = node_coords(edgelist, labels=V(some_graph)$name)
 #'  
 #'  # arc diagram with various labels
 #'  arcplot(edgelist, show.labels=FALSE, show.nodes=TRUE)
