@@ -4,6 +4,8 @@
 #' 
 #' @param edgelist basically a two-column matrix with edges 
 #' (see \code{\link{graph}})
+#' @param vertices optional vector of vertex names corresponding with 
+#' those in the edgelist
 #' @param sorted logical to indicate if nodes should be sorted 
 #' (default \code{FALSE})
 #' @param decreasing logical to indicate type of sorting 
@@ -15,7 +17,7 @@
 #' @export
 #' @keywords internal
 graph_info <- 
-  function(edgelist, sorted = FALSE, decreasing = FALSE, 
+  function(edgelist, vertices, sorted = FALSE, decreasing = FALSE, 
            ordering = NULL, labels = NULL)
   {
     # ======================================================
@@ -27,7 +29,12 @@ graph_info <-
     
     num_edges = nrow(edgelist)
     # get nodes (this could be numeric or character)
-    nodes = unique(as.vector(t(edgelist)))
+    if(hasArg(vertices)){
+      #to deal with singleton nodes
+      nodes = vertices 
+    }else{
+      nodes = unique(as.vector(t(edgelist)))  
+    }
     num_nodes = length(nodes)
     # check labels (i.e. node names)
     if (!is.null(labels))
@@ -265,6 +272,8 @@ min_max_margin <- function(radios, above)
 #' 
 #' @param edgelist basically a two-column matrix with edges 
 #' (see \code{\link{graph}})
+#' @param vertices optional vector of vertex names corresponding with 
+#' those in the edgelist
 #' @param sorted logical to indicate if nodes should be sorted 
 #' (default \code{FALSE})
 #' @param decreasing logical to indicate type of sorting 
@@ -367,7 +376,7 @@ min_max_margin <- function(radios, above)
 #'  }
 #'
 arcplot <- function(
-  edgelist, sorted = FALSE, decreasing = FALSE, ordering = NULL, 
+  edgelist, vertices, sorted = FALSE, decreasing = FALSE, ordering = NULL, 
   labels = NULL, horizontal = TRUE, above = NULL, 
   col.arcs = "#5998ff77", lwd.arcs = 1.8, lty.arcs = 1, 
   lend = 1, ljoin = 2, lmitre = 1, show.nodes = TRUE, pch.nodes = 19, 
@@ -377,9 +386,14 @@ arcplot <- function(
   outer = FALSE, adj = NA, padj = NA, axes = FALSE, ...)
 {
   # Get graph information
-  nodes_edges = graph_info(edgelist, sorted = sorted, decreasing = decreasing, 
-                           ordering = ordering, labels = labels)
-  
+  if (hasArg(vertices)) { 
+    nodes_edges = graph_info(edgelist, vertices = vertices, sorted = sorted, 
+                             decreasing = decreasing, 
+                             ordering = ordering, labels = labels)
+  } else {
+    nodes_edges = graph_info(edgelist, sorted = sorted, decreasing = decreasing, 
+                             ordering = ordering, labels = labels)
+  }
   nodes = nodes_edges$nodes
   num_nodes = nodes_edges$num_nodes
   num_edges = nodes_edges$num_edges

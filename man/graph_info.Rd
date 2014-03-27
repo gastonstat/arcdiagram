@@ -2,12 +2,15 @@
 \alias{graph_info}
 \title{Graph Information}
 \usage{
-  graph_info(edgelist, sorted = FALSE, decreasing = FALSE,
-    ordering = NULL, labels = NULL)
+  graph_info(edgelist, vertices, sorted = FALSE,
+    decreasing = FALSE, ordering = NULL, labels = NULL)
 }
 \arguments{
   \item{edgelist}{basically a two-column matrix with edges
   (see \code{\link{graph}})}
+
+  \item{vertices}{optional vector of vertex names
+  corresponding with those in the edgelist}
 
   \item{sorted}{logical to indicate if nodes should be
   sorted (default \code{FALSE})}

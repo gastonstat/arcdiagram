@@ -2,13 +2,13 @@
 \alias{arcplot}
 \title{Arc Diagram Plot}
 \usage{
-  arcplot(edgelist, sorted = FALSE, decreasing = FALSE,
-    ordering = NULL, labels = NULL, horizontal = TRUE,
-    above = NULL, col.arcs = "#5998ff77", lwd.arcs = 1.8,
-    lty.arcs = 1, lend = 1, ljoin = 2, lmitre = 1,
-    show.nodes = TRUE, pch.nodes = 19, cex.nodes = 1,
-    col.nodes = "gray80", bg.nodes = "gray80",
-    lwd.nodes = 1, show.labels = TRUE,
+  arcplot(edgelist, vertices, sorted = FALSE,
+    decreasing = FALSE, ordering = NULL, labels = NULL,
+    horizontal = TRUE, above = NULL,
+    col.arcs = "#5998ff77", lwd.arcs = 1.8, lty.arcs = 1,
+    lend = 1, ljoin = 2, lmitre = 1, show.nodes = TRUE,
+    pch.nodes = 19, cex.nodes = 1, col.nodes = "gray80",
+    bg.nodes = "gray80", lwd.nodes = 1, show.labels = TRUE,
     col.labels = "gray55", cex.labels = 0.9, las = 2,
     font = 1, line = 0, outer = FALSE, adj = NA, padj = NA,
     axes = FALSE, ...)
@@ -16,6 +16,9 @@
 \arguments{
   \item{edgelist}{basically a two-column matrix with edges
   (see \code{\link{graph}})}
+
+  \item{vertices}{optional vector of vertex names
+  corresponding with those in the edgelist}
 
   \item{sorted}{logical to indicate if nodes should be
   sorted (default \code{FALSE})}
