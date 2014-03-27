@@ -382,7 +382,7 @@ arcplot <- function(
   outer = FALSE, adj = NA, padj = NA, axes = FALSE, ...)
 {
   # Get graph information
-  if(hasArg(vertices) { 
+  if(hasArg(vertices)) { 
   nodes_edges = graph_info(edgelist, vertices = vertices, sorted = sorted, decreasing = decreasing, 
                            ordering = ordering, labels = labels)
   }else{
