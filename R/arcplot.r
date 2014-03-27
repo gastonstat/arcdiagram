@@ -16,7 +16,7 @@
 #' @keywords internal
 graph_info <- 
   function(edgelist, sorted = FALSE, decreasing = FALSE, 
-           ordering = NULL, labels = NULL)
+           ordering = NULL, labels = NULL, ... )
   {
     # ======================================================
     # Checking arguments
