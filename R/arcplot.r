@@ -487,7 +487,7 @@ arcplot <- function(
   
   
   # open empty plot window
-  plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", main = main
+  plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", main = main,
        xlab = "", ylab = "", axes = axes, ...)
   # add each edge
   for (i in 1L:num_edges)
