@@ -487,7 +487,7 @@ arcplot <- function(
   
  if(hasArg(main)){ 
   # open empty plot window
-  plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", main,
+  plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", main = main,
        xlab = "", ylab = "", axes = axes, ...)
  }else{
  plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", 
