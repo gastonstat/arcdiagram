@@ -372,7 +372,7 @@ min_max_margin <- function(radios, above)
 #'  }
 #'
 arcplot <- function(
-  edgelist, vertices, sorted = FALSE, decreasing = FALSE, ordering = NULL, 
+  edgelist, vertices, sorted = FALSE, decreasing = FALSE, ordering = NULL, main,
   labels = NULL, horizontal = TRUE, above = NULL, 
   col.arcs = "#5998ff77", lwd.arcs = 1.8, lty.arcs = 1, 
   lend = 1, ljoin = 2, lmitre = 1, show.nodes = TRUE, pch.nodes = 19, 
@@ -487,7 +487,7 @@ arcplot <- function(
   
   
   # open empty plot window
-  plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", 
+  plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", main = main
        xlab = "", ylab = "", axes = axes, ...)
   # add each edge
   for (i in 1L:num_edges)
