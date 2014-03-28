@@ -270,6 +270,7 @@ min_max_margin <- function(radios, above)
 #' 
 #' @param edgelist basically a two-column matrix with edges 
 #' (see \code{\link{graph}})
+#' @param main the title of the plot
 #' @param sorted logical to indicate if nodes should be sorted 
 #' (default \code{FALSE})
 #' @param decreasing logical to indicate type of sorting 
@@ -487,7 +488,7 @@ arcplot <- function(
   
   
   # open empty plot window
-  plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", main = main,
+  plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", main,
        xlab = "", ylab = "", axes = axes, ...)
   # add each edge
   for (i in 1L:num_edges)
