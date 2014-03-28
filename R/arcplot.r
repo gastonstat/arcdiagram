@@ -485,7 +485,7 @@ arcplot <- function(
     y_nodes = centers
   }
   
- if(hasArg(main){ 
+ if(hasArg(main)){ 
   # open empty plot window
   plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", main,
        xlab = "", ylab = "", axes = axes, ...)
