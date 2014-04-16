@@ -1,8 +1,8 @@
 Package: arcdiagram
 Type: Package
 Title: Plot pretty arc diagrams
-Version: 0.1.10
-Date: 2014-03-27
+Version: 0.1.11
+Date: 2014-04-15
 Authors@R: c(
     person("Gaston", "Sanchez",
     email = "gaston.stat@gmail.com", role = c("aut", "cre")),
