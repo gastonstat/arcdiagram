@@ -473,7 +473,7 @@ arcplot <- function(
   # auxiliar vector for plotting arcs
   z = seq(0, pi, length.out = 100)
   
-  if (!exists("xlim")|!exists("ylim"){
+  if (!exists("xlim")|!exists("ylim")){
      if (horizontal) {
       side = 1
       xlim = c(-0.015, 1.015)
