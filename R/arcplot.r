@@ -482,7 +482,8 @@ arcplot <- function(
     y_nodes = rep(0, num_nodes)    
   } else {
     side = 2
-    ylim = c(-0.015, 1.015)
+    #ylim = c(-0.015, 1.015)
+    ylim = c(0,1) #changed ylim to allow snug fit
     xlims = min_max_margin(radios, above)
     #xlim = c(xlims$min, xlims$max)
     xlim = c(0,xlims$max) #changed xlim to allow snug fit
