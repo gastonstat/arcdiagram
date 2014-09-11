@@ -383,7 +383,7 @@ arcplot <- function(
   cex.nodes = 1, col.nodes = "gray80", bg.nodes = "gray80", lwd.nodes = 1,
   show.labels = TRUE, col.labels = "gray55",
   cex.labels = 0.9, las = 2, font = 1, line = 0, 
-  outer = FALSE, adj = NA, padj = NA, axes = FALSE, ...)
+  outer = FALSE, adj = NA, padj = NA, axes = FALSE, xlim = NULL, ylim = NULL, ...)
 {
   # Get graph information
   if (hasArg(vertices)) { 
@@ -473,28 +473,68 @@ arcplot <- function(
   # auxiliar vector for plotting arcs
   z = seq(0, pi, length.out = 100)
   
-  if(!exists("x.lim")|!exists("y.lim")){
+  #if(!exists("x.lim")|!exists("y.lim")){
+  #  if (horizontal) {
+  #    side = 1
+  #    xlim = c(-0.015, 1.015)
+  #    ylims = min_max_margin(radios, above)
+  #    ylim = c(ylims$min, ylims$max)
+  #    x_nodes = centers
+  #    y_nodes = rep(0, num_nodes)    
+  #  } else {
+  #     side = 2
+  #    y.lim = c(-0.015, 1.015)
+  #    #ylim = c(0,1) #changed ylim to allow snug fit
+  #    xlims = min_max_margin(radios, above)
+  #    xlim = c(xlims$min, xlims$max)
+  #    #xlim = c(0.01,xlims$max) #changed xlim to allow snug fit
+  #    x_nodes = rep(0, num_nodes)    
+  #    y_nodes = centers
+  #  }
+  #}  
+  
+  if (horizontal) {
+    side = 1 
+  } else {
+    side = 2
+  }
+  
+  if (is.null(xlim)) {
     if (horizontal) {
-      side = 1
-      x.lim = c(-0.015, 1.015)
-      ylims = min_max_margin(radios, above)
-      y.lim = c(ylims$min, ylims$max)
+      xlim = c(-0.015, 1.015)
       x_nodes = centers
-      y_nodes = rep(0, num_nodes)    
     } else {
-      side = 2
-      y.lim = c(-0.015, 1.015)
-      #y.lim = c(0,1) #changed ylim to allow snug fit
       xlims = min_max_margin(radios, above)
-      x.lim = c(xlims$min, xlims$max)
-      #x.lim = c(0.01,xlims$max) #changed xlim to allow snug fit
-      x_nodes = rep(0, num_nodes)    
+      xlim = c(xlims$min, xlims$max)
+      x_nodes = rep(0, num_nodes)
+    }
+  } else {
+    if (horizonal) {
+      x_nodes = centers
+    } else {
+      x_nodes = rep(0, num_nodes)
+    }
+  }
+    
+  if (is.null(ylim)) {
+    if (horizontal) {
+      ylims = min_max_margin(radios, above)
+      ylim = c(ylims$min, ylims$max)
+      y_nodes = rep(0, num_nodes) 
+    } else {
+      ylim = c(-0.015, 1.015)
       y_nodes = centers
     }
-  }  
-    
+  } else {
+    if (horizonal) {
+      y_nodes = rep(0, num_nodes) 
+    } else {
+      y_nodes = centers
+    }
+  }
+
   # open empty plot window
-  plot(0.5, 0.5, xlim = x.lim, ylim = y.lim, type = "n", 
+  plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", 
        xlab = "", ylab = "", axes = axes, ...)
   # add each edge
   for (i in 1L:num_edges)
