@@ -473,26 +473,6 @@ arcplot <- function(
   # auxiliar vector for plotting arcs
   z = seq(0, pi, length.out = 100)
   
-  #if(!exists("x.lim")|!exists("y.lim")){
-  #  if (horizontal) {
-  #    side = 1
-  #    xlim = c(-0.015, 1.015)
-  #    ylims = min_max_margin(radios, above)
-  #    ylim = c(ylims$min, ylims$max)
-  #    x_nodes = centers
-  #    y_nodes = rep(0, num_nodes)    
-  #  } else {
-  #     side = 2
-  #    y.lim = c(-0.015, 1.015)
-  #    #ylim = c(0,1) #changed ylim to allow snug fit
-  #    xlims = min_max_margin(radios, above)
-  #    xlim = c(xlims$min, xlims$max)
-  #    #xlim = c(0.01,xlims$max) #changed xlim to allow snug fit
-  #    x_nodes = rep(0, num_nodes)    
-  #    y_nodes = centers
-  #  }
-  #}  
-  
   if (horizontal) {
     side = 1 
   } else {
