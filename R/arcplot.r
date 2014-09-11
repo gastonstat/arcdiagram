@@ -509,7 +509,7 @@ arcplot <- function(
       x_nodes = rep(0, num_nodes)
     }
   } else {
-    if (horizonal) {
+    if (horizontal) {
       x_nodes = centers
     } else {
       x_nodes = rep(0, num_nodes)
@@ -526,7 +526,7 @@ arcplot <- function(
       y_nodes = centers
     }
   } else {
-    if (horizonal) {
+    if (horizontal) {
       y_nodes = rep(0, num_nodes) 
     } else {
       y_nodes = centers
