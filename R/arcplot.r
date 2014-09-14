@@ -383,7 +383,7 @@ arcplot <- function(
   cex.nodes = 1, col.nodes = "gray80", bg.nodes = "gray80", lwd.nodes = 1,
   show.labels = TRUE, col.labels = "gray55",
   cex.labels = 0.9, las = 2, font = 1, line = 0, 
-  outer = FALSE, adj = NA, padj = NA, axes = FALSE, ...)
+  outer = FALSE, adj = NA, padj = NA, axes = FALSE, xlim = NULL, ylim = NULL, ...)
 {
   # Get graph information
   if (hasArg(vertices)) { 
@@ -474,22 +474,45 @@ arcplot <- function(
   z = seq(0, pi, length.out = 100)
   
   if (horizontal) {
-    side = 1
-    xlim = c(-0.015, 1.015)
-    ylims = min_max_margin(radios, above)
-    ylim = c(ylims$min, ylims$max)
-    x_nodes = centers
-    y_nodes = rep(0, num_nodes)    
+    side = 1 
   } else {
     side = 2
-    ylim = c(-0.015, 1.015)
-    xlims = min_max_margin(radios, above)
-    xlim = c(xlims$min, xlims$max)
-    x_nodes = rep(0, num_nodes)    
-    y_nodes = centers
   }
   
-  
+  if (is.null(xlim)) {
+    if (horizontal) {
+      xlim = c(-0.015, 1.015)
+      x_nodes = centers
+    } else {
+      xlims = min_max_margin(radios, above)
+      xlim = c(xlims$min, xlims$max)
+      x_nodes = rep(0, num_nodes)
+    }
+  } else {
+    if (horizontal) {
+      x_nodes = centers
+    } else {
+      x_nodes = rep(0, num_nodes)
+    }
+  }
+    
+  if (is.null(ylim)) {
+    if (horizontal) {
+      ylims = min_max_margin(radios, above)
+      ylim = c(ylims$min, ylims$max)
+      y_nodes = rep(0, num_nodes) 
+    } else {
+      ylim = c(-0.015, 1.015)
+      y_nodes = centers
+    }
+  } else {
+    if (horizontal) {
+      y_nodes = rep(0, num_nodes) 
+    } else {
+      y_nodes = centers
+    }
+  }
+
   # open empty plot window
   plot(0.5, 0.5, xlim = xlim, ylim = ylim, type = "n", 
        xlab = "", ylab = "", axes = axes, ...)
