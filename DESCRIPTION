@@ -12,8 +12,9 @@ Description: Implementation of the function 'arcplot' for plotting pretty arc
     diagrams ('arcdiagram' can be seen as a plugin for the 'igraph' package)
 URL: https://github.com/gastonstat/arcdiagram
 Depends:
-    igraph,
-    R (>= 2.15.1)
+    R (>= 3.0)
+Imports:
+    igraph
 Suggests:
     diagram,
     knitr,
