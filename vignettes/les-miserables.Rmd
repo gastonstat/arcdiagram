@@ -1,0 +1,238 @@
+---
+title: "Les Miserables"
+author: "Gaston Sanchez"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{les miserables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(collapse = T, comment = "#>")
+library(igraph)
+library(arcdiagram)
+library(dplyr)
+```
+
+```{r miserables_cover, echo=FALSE, message=FALSE}
+library(arcdiagram)
+
+# read 'gml' file
+mis_file = "../lesmiserables.gml"
+mis_graph = read.graph(mis_file, format="gml")
+
+# get vertex labels
+vlabels = get.vertex.attribute(mis_graph, "label")
+
+# get vertex groups
+vgroups = get.vertex.attribute(mis_graph, "group")
+
+# get vertex fill color
+vfill = get.vertex.attribute(mis_graph, "fill")
+
+# get vertex border color
+vborders = get.vertex.attribute(mis_graph, "border")
+
+# get vertex degree
+degrees = degree(mis_graph)
+
+# get edges value
+values = get.edge.attribute(mis_graph, "value")
+
+# get edgelist
+edgelist = get.edgelist(mis_graph)
+
+# groups and degree
+library(reshape)
+x = data.frame(vgroups, degrees, vlabels, ind=1:vcount(mis_graph))
+y = arrange(x, desc(vgroups), desc(degrees))
+new_ord = y$ind
+```
+
+```{r miser_arcdiag_cover, echo=FALSE, fig.width=13, fig.height=5.5, out.width='1\\linewidth', out.height='.5\\linewidth', fig.align='center'}
+# plot
+op = par(mar = c(6, 0, 1, 0))
+arcplot(edgelist, ordering=new_ord, labels=vlabels, cex.labels=0.8,
+        show.nodes=TRUE, col.nodes=vborders, bg.nodes=vfill, 
+        cex.nodes = log(degrees)+0.5, pch.nodes=21,
+        lwd.nodes = 2, line=-0.5, 
+        col.arcs = hsv(0, 0, 0.2, 0.25), lwd.arcs = 1.5 * values)
+par(op)
+```
+
+
+
+## Introduction
+
+This document describes the required steps that you'll need to follow to get an arc diagram like the one from _Les Miserables_ with the R package `"arcdiagram"` (a minimalist package designed for plotting pretty arc diagrams).
+
+
+## Les Miserables
+
+The file for this example is `lesmiserables.gml` which is available in the github repository of the `"arcdiagram"` package:
+
+https://github.com/gastonstat/arcdiagram/lesmiserables.gml
+
+This file is a text file with __GML__ format, which is just a type of format for graphs. You can find more information about GML format at:
+
+http://en.wikipedia.org/wiki/Graph_Modelling_Language
+
+
+### Step 1: Read data in R
+
+I'm assuming that you already checked the introductory documentation of the `"arcdiagram"`.
+After downloading the `gml` file, you will have to import it in R using the function `read.graph()` with the argument `format = "gml"`. I assume that the `.gml` file is in your working directory:
+
+```{r miserables_file, eval=FALSE}
+# load 'arcdiagram'
+library(arcdiagram)
+
+# read 'gml' file
+mis_graph = read.graph("lesmiserables.gml", format = "gml")
+```
+
+
+### Step 2: Extract edge list
+
+Since we will use the function `arcplot()`, we need an __edgelist__. The good news is that we can use the function `get.edgelist()` to extract it from `mis_graph`:
+
+```{r get_edgelist}
+# get edgelist
+edgelist = get.edgelist(mis_graph)
+```
+
+Once we have the `edgelist`, we can try to get a first ---very raw--- arc diagram with `arcplot()`:
+
+```{r miser_plot1, fig.width=10, fig.height=5, out.width='.99\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=c(1,3)}
+# first plot
+op = par(mar = c(2, 0.5, 1, 0.5))
+arcplot(edgelist)
+par(op)
+```
+
+You can see from the previous figure that our first arc diagram has nothing to do with what we are looking for. A better approximation can be obtained if we start tweaking some of the parameters like the symbols of the nodes, the color of the arcs, and their line widths:
+
+```{r miser_plot2, fig.width=10, fig.height=5, out.width='.99\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=c(1,3)}
+# second plot
+op = par(mar = c(2, 0.5, 1, 0.5))
+arcplot(edgelist, cex.labels=0.8,
+        show.nodes=TRUE, lwd.nodes = 2, line=-0.5, 
+        col.arcs = hsv(0, 0, 0.2, 0.25), lwd.arcs = 1.5)
+par(op)
+```
+
+
+### Step 3: Information about nodes and edges
+
+Most of the necessary ingredients to create our pretty arc diagram are contained in the graph object `mis_graph`: the fill color of the nodes, the border color of the nodes, the group memberships, the node labels, and the arc widths. If you print `mis_graph` you will see the following output:
+
+```{r view_mis_graph}
+# what's in mis_graph
+mis_graph
+```
+
+The first line tells you that `mis_graph` is an undirected graph with 77 nodes and 254 edges (`U--- 77 254 --`). The second and third lines indicate that `mis_graph` has the following attributes (`attr`):
+
+- `id (v/n)`: this is the id of the nodes (numeric)
+- `label (v/c)`: this the label of the nodes (character)
+- `group (v/n)`: this is the group indicator of nodes (numeric)
+- `fill (v/c)`: this is the fill color of the nodes (character)
+- `border (v/c)`: this is the border color of the nodes (character)
+- `value (e/n)`: this is a value associated to the edges (numeric)
+
+To extract all the data attributes associated with the nodes in the `mis_graph` we have to use the functions `get.vertex.attribute()` and `get.edge.attribute()`:
+
+```{r get_attributes}
+# get vertex labels
+vlabels = get.vertex.attribute(mis_graph, "label")
+
+# get vertex groups
+vgroups = get.vertex.attribute(mis_graph, "group")
+
+# get vertex fill color
+vfill = get.vertex.attribute(mis_graph, "fill")
+
+# get vertex border color
+vborders = get.vertex.attribute(mis_graph, "border")
+
+# get edges value
+values = get.edge.attribute(mis_graph, "value")
+```
+
+In addition to the node (i.e. vertices) attributes, we also need to get the degree of the nodes by using the function `degree()`:
+
+```{r get_degree}
+# get vertex degree
+degrees = degree(mis_graph)
+```
+
+```{r echo=FALSE}
+options(width = 60)
+```
+
+Ok, let's try a third plot attempt:
+
+```{r miser_plot3, fig.width=10, fig.height=5, out.width='.99\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=c(1,3)}
+# third plot
+op = par(mar = c(5, 0, 1, 0))
+arcplot(edgelist, labels=vlabels, cex.labels=0.8,
+        show.nodes=TRUE, col.nodes=vborders, bg.nodes=vfill, 
+        cex.nodes = log(degrees)+0.5, pch.nodes=21,
+        lwd.nodes = 2, line=-0.5, 
+        col.arcs = hsv(0, 0, 0.2, 0.25), lwd.arcs = 1.5 * values)
+par(op)
+```
+
+
+### Step 4: Nodes Ordering
+
+We are very close to our objective but we still need the right ordering for the nodes. One option to get the nodes ordering is by using the package `dplyr` (by Hadley Wickham):
+
+```{r dplyr, eval=FALSE}
+# if you haven't installed it
+install.packages("dplyr")
+
+# load 'dplyr'
+library(dplyr)
+```
+
+The idea is to create a data frame with the following variables: `vgroups`, `degrees`, `vlabels`, and a numeric index for the nodes `ind`.
+
+```{r data_frame}
+# data frame with node attributes
+x = data.frame(vgroups, degrees, vlabels, ind=1:vcount(mis_graph))
+
+# take a peek to the data frame
+head(x)
+```
+
+We will arrange the data frame in descending order, first by `vgroups` and then by `degrees`; what we want is the sorted `ind`:
+
+```{r ordering}
+# arrange by groups and degree
+y = arrange(x, desc(vgroups), desc(degrees))
+
+# what does 'y' look like?
+head(y)
+
+# get 'ind' ordering
+new_ord = y$ind
+```
+
+
+### Step 5: Final plot
+
+Now we are ready to produce the desired arc diagram:
+
+```{r miser_arcdiag_plot, fig.width=10, fig.height=5, out.width='.99\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=c(1,3)}
+# plot
+op = par(mar = c(6, 0, 1, 0))
+arcplot(edgelist, ordering=new_ord, labels=vlabels, cex.labels=0.8,
+        show.nodes=TRUE, col.nodes=vborders, bg.nodes=vfill, 
+        cex.nodes = log(degrees)+0.5, pch.nodes=21,
+        lwd.nodes = 2, line=0, 
+        col.arcs = hsv(0, 0, 0.2, 0.25), lwd.arcs = 1.5 * values)
+par(op)
+```
+
