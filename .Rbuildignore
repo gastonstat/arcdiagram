@@ -1,0 +1,5 @@
+^README.md
+^devtools-flow.R
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
