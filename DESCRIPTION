@@ -1,8 +1,8 @@
 Package: arcdiagram
 Type: Package
 Title: Plot pretty arc diagrams
-Version: 0.1.11
-Date: 2014-04-15
+Version: 0.1.12
+Date: 2018-12-01
 Authors@R: c(
     person("Gaston", "Sanchez",
     email = "gaston.stat@gmail.com", role = c("aut", "cre")),
@@ -10,13 +10,14 @@ Authors@R: c(
 Maintainer: Gaston Sanchez <gaston.stat@gmail.com>
 Description: Implementation of the function 'arcplot' for plotting pretty arc
     diagrams ('arcdiagram' can be seen as a plugin for the 'igraph' package)
-URL: http://www.gastonsanchez.com
+URL: https://github.com/gastonstat/arcdiagram
 Depends:
     igraph,
     R (>= 2.15.1)
 Suggests:
     diagram,
-    knitr
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
 License: GPL-3
 LazyLoad: yes
