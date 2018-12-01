@@ -317,6 +317,8 @@ min_max_margin <- function(radios, above)
 #' the reading direction (see \code{\link{mtext}})
 #' @param axes logical indicating whether to plot the axes 
 #' (default \code{FALSE})
+#' @param xlim numeric vector of length 2, giving the x coordinates 
+#' @param ylim numeric vector of length 2, giving the y coordinates 
 #' @param ... further graphical parameters (see \code{\link{par}}), including
 #' \code{family}, \code{xpd}, \code{main}, \code{asp}, etc.
 #' @author Gaston Sanchez
