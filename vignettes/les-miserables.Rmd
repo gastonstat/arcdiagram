@@ -16,8 +16,6 @@ library(dplyr)
 ```
 
 ```{r miserables_cover, echo=FALSE, message=FALSE}
-library(arcdiagram)
-
 # read 'gml' file
 mis_file = "../lesmiserables.gml"
 mis_graph = read.graph(mis_file, format="gml")
@@ -44,7 +42,6 @@ values = get.edge.attribute(mis_graph, "value")
 edgelist = get.edgelist(mis_graph)
 
 # groups and degree
-library(reshape)
 x = data.frame(vgroups, degrees, vlabels, ind=1:vcount(mis_graph))
 y = arrange(x, desc(vgroups), desc(degrees))
 new_ord = y$ind
