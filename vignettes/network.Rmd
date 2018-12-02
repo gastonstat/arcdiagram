@@ -1,0 +1,203 @@
+---
+title: "Arcdiagrams with package network"
+author: "Gaston Sanchez"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{arcdiagram with network}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(collapse = T, comment = "#>")
+library(igraph)
+library(network)
+library(arcdiagram)
+```
+
+## Introduction
+
+`"arcdiagram"` is a package for producing pretty arc diagrams of graphs in R. You can think of `"arcdiagram"` as a plugin of the package `"igraph"` (by Gabor Csardi and Tamas Nepusz). In this document we will discuss how to use `"arcdiagram"` to produce arc diagrams of graphs from the package `"network"` (by Carter Butts, David Hunter, and Mark Handcock).
+
+
+
+## R package `network`
+
+R has several packages dedicated to graphs and network analysis. There is even a __CRAN Task View__ for graphical models that you can check at:
+
+http://cran.r-project.org/web/views/gR.html
+
+`"arcdiagram"` has been designed _to fit like a glove_ for graph edge lists obtained from `"igraph"`. However, graph edge lists can also be obtained using the package `"network"`. Let's see how to play with `"arcdiagram"` and `"network"`.
+
+
+### Step 1: Load packages
+
+First let's load the packages `"arcdiagram"` and `"network"` (I'm assuming you already installed them)
+
+```{r libraries, message=FALSE}
+# load 'arcdiagram'
+library(arcdiagram)
+
+# load 'network'
+library(network)
+```
+
+
+
+### Step 2: Toy example
+
+Let's start with a very simple example. We will generate a random graph with 7 nodes. One way to do this is by generating an adjacency matrix first and then create the graph with the function `network()`:
+
+```{r toy_example}
+# generate a random adjacency matrix
+set.seed(95)
+toy_matrix <- matrix(rbinom(49,1,.25), 7, 7)
+diag(toy_matrix) = 0
+
+# create a graph from the adjacency matrix
+toy_graph <- network(toy_matrix, directed = FALSE)
+```
+
+
+### Step 3: Extract `edgelist`
+
+Once we have the network, we need to extract the edge list which will be used as the main argument for `arcplot()`. The way to obtain an edge list from a `"network"` object is with the function `as.matrix()` and the argument `matrix.type = "edgelist"`
+
+```{r toy_edgelist}
+# edgelist
+toy_edges <- as.matrix(toy_graph, matrix.type = "edgelist")
+```
+
+
+### Step 4: Plot arc diagram
+
+The edge list `toy_edges` is all you need to produce an arc diagram with `arcplot()`:
+
+```{r arcplot_edgelist, fig.width=6, fig.height=4, out.width='.8\\linewidth', out.height='.5\\linewidth', fig.align='center', echo=c(1,3)}
+# plot arc diagram
+op <- par(mar = c(1, 0.5, 0.5, 0.5))
+arcplot(toy_edges, las=1)
+par(op)
+```
+
+
+
+## Florentine Weddings Network
+
+Let's see another example using a more interesting data set. We will use the data `"flo"` which is one of the datasets available in `"network"`. This data set consists of weddings among leading Florentine families (in Italy). 
+
+
+### Step 1: Data `flo`
+
+The way to get a graph (i.e. network) from the data `"flo"` is by using the function `network()`: 
+
+```{r data_flo}
+# load data 'flo'
+data(flo)
+
+# network
+netflo <- network(flo)
+
+# what does 'netflo' look like?
+netflo
+```
+
+
+### Step 2: Edgelist
+
+Because the main argument for `arcplot()` is an edge list, we need to use `as.matrix()` with its argument `matrix.type = "edgelist"` to get such a list form `netflo`:
+
+```{r flo_edgelist}
+# edgelist
+flo_edges <- as.matrix(netflo, matrix.type="edgelist")
+```
+
+Now we can get a first arc diagram:
+
+```{r flo_plot1, fig.width=6, fig.height=4, out.width='.9\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=c(1,3)}
+# second plot
+op = par(mar = c(2, 0.5, 1, 0.5))
+arcplot(flo_edges, las=1)
+par(op)
+```
+
+
+### Step 3: Node Labels
+
+If you inspect either the object `netflo` or the edgelist `flo\_edges`, you will see that we have the names of the nodes (i.e. the vertices) as an attribute, for instance:
+
+```{r print_netflo}
+# print netflo
+netflo
+```
+
+As you can see in the last lines of the output, `netflo` contains the vertex attribute names `vertex.names`. One way to get these names is by using the function `get.vertex.attribute()`:
+
+```{r fail_attribute}
+# try to get vertex names
+get.vertex.attribute(netflo, "vertex.names")
+```
+
+If by any chance you find an error message telling you something like this (don't panic): 
+
+```
+Error in get.vertex.attribute(netflo, "vertex.names") : 
+  Not a graph object
+```
+
+The cause of the problem is a "compatibility" issue between the packages `"igraph"` and `"network"` (remember that `"arcdiagram"` depends on `"igraph"`). Both packages have the same name for some of their functions ---`get.vertex.attribute()` among them---. Actually, since we first load `"arcdiagram"`, this implies that the homonym functions of `"network"` are __masked__ by those of `"igraph"`. The solution? Use the double colon operator `::`. To get the vertex names from `netflo` we have to specify the `namespace` under which the required `get.vertex.attribute()` function is located:
+
+```{r flo_get_vertex_names}
+# get vertex names
+flo_names <- network::get.vertex.attribute(netflo, "vertex.names")
+
+# show me the names
+flo_names
+```
+
+An alternative way to get the vertex names is by extracting them directly from the edge list `flo_edges` with the function `attributes()`:
+
+```{r flo_get_labels}
+# another way to get vertex names
+attributes(flo_edges)$vnames
+```
+
+Of course, this a painless way to get the names, but I wanted to show you the hard way in case you find yourself trapped in that quandary.
+
+
+
+### Step 4: Arc plot attempt
+
+Having extracted the `vertex.names`, it seems that we are ready to plot an arc diagram with the node labels:
+
+```{r flo_plot2, eval = FALSE}
+# arc plot with node labels
+arcplot(flo_edges, labels=flo_names)
+```
+
+Well, we are not ready yet. The problem is that we have more labels than nodes in the edge list (node 12 does not appear in `flo\_edges`). The solution is a bit elaborated: first we need to get the node numbers from the edgelist, and then we have to select their corresponding names:
+
+```{r flo_labels}
+# numeric indices in 'flo_edges'
+temp <- unique(as.vector(t(flo_edges)))
+temp
+
+# node labels
+flo_labels = attributes(flo_edges)$vnames[temp]
+
+# check it
+flo_labels
+```
+
+
+### Step 5: Final plot
+
+Now we are ready to produce the desired arc diagram:
+
+```{r flo_plot3, fig.width=6, fig.height=4, out.width='.9\\linewidth', out.height='.6\\linewidth', fig.align='center', echo=c(1,3)}
+# second plot
+op = par(mar = c(5, 0, 1, 0))
+arcplot(flo_edges, labels=flo_labels)
+par(op)
+```
+
