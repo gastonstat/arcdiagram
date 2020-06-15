@@ -1,19 +1,20 @@
 # `"arcdiagram"`
 
-`arcdiagram` is a minimalist package that provides a basic function to plot pretty arc diagrams in R
+`arcdiagram` is a minimalist package that provides a basic function to plot 
+pretty arc diagrams in R
 
 ## Installation
 
-Development version on [github](https://github.com/gastonstat/arcdiagram)
-```ruby
-# development version
-library(devtools)
+`arcdiagram` is only available in github (but not in CRAN). To install the 
+development version, use `install_github()` from R package `"devtools"`:
 
-# install 'arcdiagram'
-install_github('arcdiagram',  username='gastonstat')
+```ruby
+# install 'arcdiagram' (development version)
+devtools::install_github('gastonstat/arcdiagram')
 ```
 
 ## Some Examples
+
 ```ruby
 library(arcdiagram)
 
@@ -49,9 +50,3 @@ arcplot(star_edges, ordering=sample(1:10), horizontal=FALSE,
    col.nodes="gray80", bg.nodes="gray90", lwd.nodes=2)
 par(op)
 ```
-
-Author Contact
---------------
-[www.gastonsanchez.com](http://www.gastonsanchez.com)
-
-Gaston Sanchez (`gaston.stat at gmail.com`)
