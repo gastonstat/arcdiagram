@@ -10,7 +10,7 @@ Development version on [github](https://github.com/gastonstat/arcdiagram)
 library(devtools)
 
 # install 'arcdiagram'
-install_github('arcdiagram',  username='gastonstat')
+install_github('gastonstat/arcdiagram')
 ```
 
 ## Some Examples
