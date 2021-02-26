@@ -1,7 +1,28 @@
 # `"arcdiagram"`
 
 `arcdiagram` is a minimalist package that provides a basic function to plot 
-pretty arc diagrams in R
+pretty arc diagrams in R.
+
+
+## Donation
+
+If you find any value and usefulness in `arcdiagram`, please consider making 
+a one-time donation in any amount. Your support really matters.
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+<input type="hidden" name="cmd" value="_donations" />
+<input type="hidden" name="business" value="ZF6U7K5MW25W2" />
+<input type="hidden" name="currency_code" value="USD" />
+
+<!--  
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" /> 
+-->
+
+<input type="image" src="https://drive.google.com/file/d/1G9425jR_F7enZivuR1dWcNdJSO3szfhL/view?usp=sharing" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" width="140" height="60"/> 
+</form>
+
+
+
 
 ## Installation
 
